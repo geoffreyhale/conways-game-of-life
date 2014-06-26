@@ -1,85 +1,112 @@
-var numRows = 0;
-var numCols = 0;
-var cells = [];
+
+
+
+
+// TIMER:
 var ticksPassed = 0;
-
-function makeTable(inumRows,inumCols) {
-    numRows = inumRows;
-    numCols = inumCols;
-    for ( var i = 0; i < numRows; i++ ) {
-        for ( var j = 0; j < numCols; j++ ) {
-            cells.push(false);
-        }
-    }
-}
-
-function drawTable() {
-    if ( numRows && numCols ) {
-        document.write("<table>");
-        for ( var i = 0; i < numRows; i++ ) {
-            document.write("<tr>");
-            for ( var j = 0; j < numCols; j++ ) {
-                document.write("<td id='cell" + ( i * numRows + j ) + "' onClick='toggleCell("+i+","+j+")'>" +
-                    numAdjacent(i, j) +
-                    "</td>");
-            }
-            document.write("</tr>");
-        }
-        document.write("</table>");
-    }
-    document.write("Tick #:<span id='ticksPassed'>" + ticksPassed + "</span>");
-}
-
-
-/*** USER ACTIONS ***/
-function toggleCell(i,j) {
-    cells[i*numRows+j] = !cells[i*numRows+j];
-    document.getElementById("cell" + ( i * numRows + j )).innerHTML = numAdjacent(i, j);
-    cellColorUpdate(i,j);
-}
-
-
-/*** GAME TIMER ***/
-var gameTickLength = window.setInterval(nextTick, 2000);
+//var gameTickLength = window.setInterval(nextTick, 2000);
 function nextTick() {
     ticksPassed++;
     document.getElementById("ticksPassed").innerHTML=ticksPassed;
-    evolveCells();
-    for ( var i = 0; i < numRows; i++ ) {
-        for (var j = 0; j < numCols; j++) {
-            cellColorUpdate(i,j);
-        }
+
+    lifeHappens();
+    updateCellFeedback();
+}
+
+
+
+// Cell object constructor
+function Cell() { this.exists = false; }
+
+var arrayOfCells = new Array();
+
+var rowsOfCells = 4;
+var colsOfCells = 8;
+var sizeOfArrayOfCells = rowsOfCells*colsOfCells;
+
+for ( var i = 0; i < sizeOfArrayOfCells; i++ ) {
+    arrayOfCells.push(new Cell());
+}
+
+function id_ij(i,j) {
+    return i * colsOfCells + j;
+}
+
+// DRAW INITIAL TABLE:
+document.write("<table>");
+for ( var i = 0; i < rowsOfCells; i++ ) {
+    document.write("<tr>");
+    for ( var j = 0; j < colsOfCells; j++ ) {
+        var idOfCell = id_ij(i,j);
+        document.write("<td id='cell" + idOfCell + "' " +
+                "onClick='toggleCellExist(" + idOfCell + ")'>" +
+                "<span class='idCellTable'>" + idOfCell + "</span>" +
+                "<br/><span id='nAC" + idOfCell + "' class='numAdjacentCells'>a:" + numAdjacentCells(idOfCell) + "</span>" +
+                "</td>"
+        );
+    }
+    document.write("</tr>");
+}
+document.write("</table>");
+
+document.write("<br/>Number of ticks passed:<span id='ticksPassed'> " + ticksPassed + "</span>");
+
+
+
+// INITIAL COLORING:
+for ( var idOfCell = 0; idOfCell < arrayOfCells.length; idOfCell++ ) {
+    updateCellColor ( idOfCell );
+}
+
+
+function toggleCellExist( idOfCell ) {
+    arrayOfCells[idOfCell].exists = !arrayOfCells[idOfCell].exists;
+    updateCellFeedback();
+}
+
+
+
+function updateCellFeedback() {
+    for ( var idOfCell = 0; idOfCell < arrayOfCells.length; idOfCell++ ) {
+        updateCellValueAdjacentCells( idOfCell );
+        updateCellColor( idOfCell );
     }
 }
 
-function evolveCells() {
-    var tempCells = cells;
-    for ( var i = 0; i < numRows; i++ ) {
-        for (var j = 0; j < numCols; j++) {
-            if ( numAdjacent(i, j) > 0 ) {
-                tempCells[i * numRows + j] = true;
-            } else {
-                tempCells[i * numRows + j] = false;
-            }
-            document.getElementById("cell" + ( i * numRows + j )).innerHTML = numAdjacent(i, j);
-        }
-    }
-    cells = tempCells;
-}
-
-function numAdjacent(i,j) {
+function numAdjacentCells( idOfCell ) {
     var num = 0;
-    if ( cells[(i-1)*numRows+j] ) { num++; }
-    if ( cells[(i+1)*numRows+j] ) { num++; }
-    if ( cells[(i)*numRows+j-1] ) { num++; }
-    if ( cells[(i)*numRows+j+1] ) { num++; }
+    var col = idOfCell % colsOfCells;
+    var row = Math.floor( idOfCell / colsOfCells );
+    if ( col > 0 && arrayOfCells[idOfCell-1].exists ) { num++; }
+    if ( col < (colsOfCells - 1) && arrayOfCells[idOfCell+1].exists ) { num++; }
+    if ( row > 0 && arrayOfCells[idOfCell-colsOfCells].exists ) { num++; }
+    if ( row < (rowsOfCells - 1) && arrayOfCells[idOfCell+colsOfCells].exists ) { num++; }
     return num;
 }
 
-function cellColorUpdate(i,j) {
-    if ( cells[i*numRows+j] == true ) {
-        document.getElementById("cell" + ( i * numRows + j )).style.background="pink";
+function updateCellColor( idOfCell ) {
+    if ( arrayOfCells[idOfCell].exists ) {
+        document.getElementById( "cell" + idOfCell ).style.background="pink";
     } else {
-        document.getElementById("cell" + ( i * numRows + j )).style.background="#f8f8f8";
+        document.getElementById( "cell" + idOfCell ).style.background="lightgrey";
     }
 }
+
+function updateCellValueAdjacentCells( idOfCell ) {
+    document.getElementById( "nAC" + idOfCell).innerHTML = numAdjacentCells(idOfCell);
+}
+
+function lifeHappens() {
+    var tempArray = arrayOfCells;
+    for ( var idOfCell = 0; idOfCell < arrayOfCells.length; idOfCell++ ) {
+        if ( numAdjacentCells(idOfCell) > 1 ) {
+            tempArray[idOfCell].exists = true;
+        } else {
+            tempArray[idOfCell].exists = false;
+        }
+    }
+    arrayOfCells = tempArray;
+}
+
+
+

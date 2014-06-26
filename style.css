@@ -1,5 +1,4 @@
 * {
-    text-align: center;
 }
 table {
     border: 2px solid black;
@@ -10,4 +9,12 @@ td {
     border: 1px solid grey;
     width: 32px;
     height: 32px;
+}
+
+.idCellTable {
+    font-size: 10px;
+    vertical-align: top;
+}
+.numAdjacentCells {
+    font-size: 14px;
 }
