@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript" src="script.js"></script>
 </head>
 <body>
-    <script>
 
-        drawTable();
-    </script>
-    <button onclick="nextTick()">time++</button>
+    <div id="grid">grid will draw here</div>
+    <button onclick="initMatrix()">initMatrix</button>
+    <button onclick="drawMatrix()">drawMatrix</button>
+    <button onclick="goNextGen()">goNextGen</button>
+
+    <script type="text/javascript" src="conways-game-of-life.js"></script>
 </body>
 </html>

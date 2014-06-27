@@ -86,9 +86,9 @@ function numAdjacentCells( idOfCell ) {
 
 function updateCellColor( idOfCell ) {
     if ( arrayOfCells[idOfCell].exists ) {
-        document.getElementById( "cell" + idOfCell ).style.background="pink";
+        document.getElementById( "cell" + idOfCell ).style.background="yellow";
     } else {
-        document.getElementById( "cell" + idOfCell ).style.background="lightgrey";
+        document.getElementById( "cell" + idOfCell ).style.background="#f0f0f0";
     }
 }
 
@@ -107,6 +107,4 @@ function lifeHappens() {
     }
     arrayOfCells = tempArray;
 }
-
-
 
