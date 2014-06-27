@@ -1,6 +1,24 @@
+//BUG: Can stack timers and not get rid of any but the last
+
+
+
 var matrix = [];
-var matrixRows = 8;
-var matrixCols = 10;
+var matrixRows = 16;
+var matrixCols = 32;
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    init();
+}, false);
+
+
+
+function init() {
+    initMatrix();
+    drawMatrix();
+    updateMatrix();
+}
 
 
 
@@ -8,7 +26,7 @@ function initMatrix() {
     for ( var row = 0; row < matrixRows; row++ ) {
         matrix[row] = [];
         for ( var col = 0; col < matrixCols; col++ ) {
-            matrix[row][col] = ( row * matrixCols + col ) % 2;
+            matrix[row][col] = Math.floor( Math.random() * 2 );
         }
     }
 }
@@ -17,11 +35,11 @@ function initMatrix() {
 
 function drawMatrix() {
     var toGrid = "";
-    toGrid += "<table>";
+    toGrid += "<table class='conways-game-of-life'>";
     for ( var row = 0; row < matrixRows; row++ ) {
         toGrid += "<tr>";
         for ( var col = 0; col < matrixCols; col++ ) {
-            toGrid += "<td id='cell-"+row+"-"+col+"'>" + matrix[row][col] + "</td>";
+            toGrid += "<td id='cell-"+row+"-"+col+"' class='conways-game-of-life'>" + matrix[row][col] + "</td>";
         }
         toGrid += "</tr>";
     }
@@ -60,23 +78,24 @@ function goNextGen() {
         for ( var col = 0; col < matrixCols; col++ ) {
             var numFriends = getNumFriends(row, col);
             // 1) Any live cell with fewer than two live neighbors dies, as if caused by under-population;
-            if ( matrix[row][col] && numFriends < 2 ) { tempMatrix[row][col] = false; }
+            if ( matrix[row][col] && numFriends < 2 ) { tempMatrix[row][col] = 0; }
             // 2) Any live cell with two or three live neighbors lives on to the next generation;
             //if ( matrix[row][col] && 2 <= numFriends && numFriends <= 3 ) {};
             // 3) Any live cell with more than three live neighbors dies, as if by overcrowding; and
-            if ( matrix[row][col] && 3 < numFriends ) { tempMatrix[row][col] = false; }
+            if ( matrix[row][col] && 3 < numFriends ) { tempMatrix[row][col] = 0; }
             // 4) Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
-            if ( !matrix[row][col] && numFriends == 3 ) { tempMatrix[row][col] = true; }
+            if ( !matrix[row][col] && numFriends == 3 ) { tempMatrix[row][col] = 1; }
         }
     }
     matrix = tempMatrix;
     updateMatrix();
+
+    generationCount++;
 }
 
 
 
 function updateMatrix() {
-    alert("inside updateMatrix");
     for ( var row = 0; row < matrixRows; row++ ) {
         for ( var col = 0; col < matrixCols; col++ ) {
             document.getElementById("cell-"+row+"-"+col).innerHTML = matrix[row][col];
@@ -87,4 +106,20 @@ function updateMatrix() {
             }
         }
     }
+
+
 }
+
+
+
+/**********
+ * TIMER
+ * **********/
+
+var generationDelay = 1000; //ms
+
+var gameGenerationTimer;
+function timeOn() { gameGenerationTimer = window.setInterval(goNextGen,generationDelay); }
+function timeOff() { clearInterval(gameGenerationTimer); }
+
+var generationCount = 0;
