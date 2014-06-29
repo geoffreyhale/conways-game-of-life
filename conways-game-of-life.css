@@ -7,4 +7,22 @@ td {
     border: 1px solid grey;
     width: 16px;
     height: 16px;
+    text-align: center;
+}
+
+div {
+    margin: 10px;
+}
+
+#gameGrid, #infoBoard {
+    float: left;
+}
+#infoBoard {
+    border: 2px solid black;
+    padding: 10px;
+}
+#controlPanel {
+    clear: both;
+    border: 2px solid black;
+    padding: 10px;
 }

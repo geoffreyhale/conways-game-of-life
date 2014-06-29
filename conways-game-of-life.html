@@ -12,14 +12,15 @@
 <br/>Its evolution is determined by its initial state.
 <br/>No further input is required.</p>
 
-<div id="grid">grid will draw here</div>
+<div id="gameGrid">grid will draw here</div>
+<div id="infoBoard">infoBoard will draw here</div>
 
 <br/>
-<div>
+<div id="controlPanel">
     <button onclick="init()">reset</button>
     <button onclick="goNextGen()">goNextGen</button>
-    <button onclick="timeOn()">time=ON</button>
-    <button onclick="timeOff()">time=OFF</button>
+    <button onclick="turnTimeOn()">time=ON</button>
+    <button onclick="turnTimeOff()">time=OFF</button>
 </div>
 
 <h2>Rules:</h2>
@@ -29,6 +30,8 @@
     <li>Any live cell with more than three live neighbours dies, as if by overcrowding.</li>
     <li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</li>
 </ol>
+
+
 
 <script type="text/javascript" src="conways-game-of-life.js"></script>
 </body>

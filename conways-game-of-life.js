@@ -1,4 +1,11 @@
-//BUG: Can stack timers and not get rid of any but the last
+
+
+// 1. Initialization
+// 2. User adjustment & instant visual update
+// 3. Generation Pass & update
+
+
+
 
 
 
@@ -6,21 +13,20 @@ var matrix = [];
 var matrixRows = 16;
 var matrixCols = 32;
 
+var cellPopulation = 0;
+
 
 
 document.addEventListener('DOMContentLoaded', function() {
     init();
 }, false);
 
-
-
 function init() {
     initMatrix();
     drawMatrix();
     updateMatrix();
+    updateInfoBoard();
 }
-
-
 
 function initMatrix() {
     for ( var row = 0; row < matrixRows; row++ ) {
@@ -31,20 +37,39 @@ function initMatrix() {
     }
 }
 
-
-
 function drawMatrix() {
     var toGrid = "";
     toGrid += "<table class='conways-game-of-life'>";
     for ( var row = 0; row < matrixRows; row++ ) {
         toGrid += "<tr>";
         for ( var col = 0; col < matrixCols; col++ ) {
-            toGrid += "<td id='cell-"+row+"-"+col+"' class='conways-game-of-life'>" + matrix[row][col] + "</td>";
+            toGrid += "<td id='cell-"+row+"-"+col+"' class='conways-game-of-life' onClick='toggleCell("+row+","+col+")'></td>";
         }
         toGrid += "</tr>";
     }
     toGrid += "</table>";
-    document.getElementById("grid").innerHTML = toGrid;
+    document.getElementById("gameGrid").innerHTML = toGrid;
+}
+
+function updateMatrix() {
+    cellPopulation = 0;
+    for ( var row = 0; row < matrixRows; row++ ) {
+        for ( var col = 0; col < matrixCols; col++ ) {
+            updateCell( row, col );
+            if ( matrix[row][col] ) {
+                cellPopulation++;
+            }
+        }
+    }
+}
+
+function updateCell( row, col ) {
+    if ( matrix[row][col] ) {
+        document.getElementById("cell-" + row + "-" + col).style.background = "yellow";
+    } else {
+        document.getElementById("cell-" + row + "-" + col).style.background = "#f0f0f0";
+    }
+    document.getElementById("cell-" + row + "-" + col).innerHTML = getNumFriends( row, col );
 }
 
 
@@ -88,26 +113,18 @@ function goNextGen() {
         }
     }
     matrix = tempMatrix;
-    updateMatrix();
-
     generationCount++;
+
+    updateMatrix();
+    updateInfoBoard();
 }
 
 
 
-function updateMatrix() {
-    for ( var row = 0; row < matrixRows; row++ ) {
-        for ( var col = 0; col < matrixCols; col++ ) {
-            document.getElementById("cell-"+row+"-"+col).innerHTML = matrix[row][col];
-            if ( matrix[row][col] ) {
-                document.getElementById("cell-" + row + "-" + col).style.background = "yellow";
-            } else {
-                document.getElementById("cell-" + row + "-" + col).style.background = "#f0f0f0";
-            }
-        }
-    }
-
-
+function toggleCell( row, col ) {
+    matrix[row][col] = !matrix[row][col];
+    updateMatrix();
+    updateInfoBoard();
 }
 
 
@@ -116,10 +133,20 @@ function updateMatrix() {
  * TIMER
  * **********/
 
-var generationDelay = 1000; //ms
+var generationDelay = 2000; //ms
 
 var gameGenerationTimer;
-function timeOn() { gameGenerationTimer = window.setInterval(goNextGen,generationDelay); }
-function timeOff() { clearInterval(gameGenerationTimer); }
+var timeOn = false;
+function turnTimeOn() { if ( !timeOn ) { gameGenerationTimer = window.setInterval(goNextGen,generationDelay); timeOn = true; } }
+function turnTimeOff() { clearInterval(gameGenerationTimer); timeOn = false; }
 
 var generationCount = 0;
+
+
+
+
+function updateInfoBoard() {
+    var boardInfo = "Generation: " + generationCount +
+        "<br/>Population: " + cellPopulation;
+    document.getElementById("infoBoard").innerHTML = boardInfo;
+}
