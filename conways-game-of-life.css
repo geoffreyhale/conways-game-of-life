@@ -9,7 +9,7 @@
 
 #cgol_game {
     width: 800px;
-    height: 306px;
+    height: 351px;
     margin: 10px auto;
     padding: 10px;
     background: #e0e0e0;
@@ -21,7 +21,7 @@
 #cgol_game_col_right {
     float: left;
     margin-left: 10px;
-    width: 333px;
+    width: 229px;
 }
 
 #infoBoard, #controlPanel {
@@ -78,10 +78,7 @@ td {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-
-
 }
-
 
 
 

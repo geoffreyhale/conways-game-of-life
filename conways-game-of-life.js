@@ -8,8 +8,8 @@
 
 
 /*** Adjustable Parameters ***/
-var matrixRows = 8;
-var matrixCols = 12;
+var matrixRows = 10;
+var matrixCols = 16;
 
 var colorNothing = "#fff"; // whitest
 var colorBirth = "#dfd"; //
@@ -77,22 +77,42 @@ function drawMatrix() {
 
 function resetGame(opts) {
     generationCount = 0;
-    initMatrix(opts);
+    initMatrix();
+    setGame(opts);
     updateGameDisplay();
 }
 
-function initMatrix(opts) {
-    for ( var row = 0; row < matrixRows; row++ ) {
-        matrix[row] = [];
-        for ( var col = 0; col < matrixCols; col++ ) {
-                matrix[row][col] = {};
-            if ( opts != null ) {
+function initMatrix() {
+    for (var row = 0; row < matrixRows; row++) {
+        matrix[row] = {};
+        for (var col = 0; col < matrixCols; col++) {
+            matrix[row][col] = {};
+        }
+    }
+}
+function setGame(opts) {
+    for (var row = 0; row < matrixRows; row++) {
+        for (var col = 0; col < matrixCols; col++) {
+            if (opts != null) {
                 matrix[row][col].exists = 0;
             } else {
-                matrix[row][col].exists = Math.floor( Math.random() * 2 );
+                matrix[row][col].exists = Math.floor(Math.random() * 2);
             }
         }
     }
+}
+function setGliderGame() {
+    generationCount = 0;
+    setGame(0);
+    matrix[matrixRows-4][1].exists = 1;
+    matrix[matrixRows-4][2].exists = 1;
+    matrix[matrixRows-4][3].exists = 1;
+    matrix[matrixRows-4][4].exists = 1;
+    matrix[matrixRows-3][0].exists = 1;
+    matrix[matrixRows-3][4].exists = 1;
+    matrix[matrixRows-2][4].exists = 1;
+    matrix[matrixRows-1][3].exists = 1;
+    updateGameDisplay();
 }
 
 
