@@ -7,32 +7,49 @@
 </head>
 <body>
 
-<h1>Conway's Game of Life</h1>
-<p>This is a zero-player cellular automation.
-<br/>Its evolution is determined by its initial state.
-<br/>No further input is required.</p>
 
-<div id="gameGrid">grid will draw here</div>
-<div id="infoBoard">infoBoard will draw here</div>
+    <div id="cgol_container">
+        <h1>Conway's Game of Life</h1>
 
-<br/>
-<div id="controlPanel">
-    <button onclick="init()">reset</button>
-    <button onclick="goNextGen()">goNextGen</button>
-    <button onclick="turnTimeOn()">time=ON</button>
-    <button onclick="turnTimeOff()">time=OFF</button>
-</div>
+        <div id="cgol_game" class="pretty">
+            <div id="cgol_game_col_left">
+                <div id="gameGrid">grid will draw here</div>
+            </div>
+            <div id="cgol_game_col_right">
+                <div id="infoBoard" class="pretty">infoBoard will draw here</div>
+                <div id="controlPanel" class="pretty">
+                    <fieldset>Colony:
+                        <button onclick="resetGame(0)">clear</button>
+                        <button onclick="resetGame()">random</button>
+                    </fieldset>
 
-<h2>Rules:</h2>
-<ol>
-    <li>Any live cell with fewer than two live neighbours dies, as if caused by under-population.</li>
-    <li>Any live cell with two or three live neighbours lives on to the next generation.</li>
-    <li>Any live cell with more than three live neighbours dies, as if by overcrowding.</li>
-    <li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</li>
-</ol>
+                    <fieldset>Time:
+                        <button onclick="turnTimeOff()">stop</button>
+                        <button onclick="goNextGen()">step</button>
+                        <button onclick="turnTimeOn()">go</button>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
 
+        <p>This is a zero-player cellular automation.
+        <br/>Its evolution is determined by its initial state.
+        <br/>No further input is required.</p>
+
+        <h2>Rules:</h2>
+        <ol>
+            <li>Any live cell with fewer than two live neighbours dies, as if caused by under-population.</li>
+            <li>Any live cell with two or three live neighbours lives on to the next generation.</li>
+            <li>Any live cell with more than three live neighbours dies, as if by overcrowding.</li>
+            <li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</li>
+        </ol>
+    </div>
 
 
 <script type="text/javascript" src="conways-game-of-life.js"></script>
+
+
+
+
 </body>
 </html>
