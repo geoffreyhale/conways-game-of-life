@@ -13,8 +13,8 @@ var matrixCols = 16;
 
 var colorNothing = "#fff"; // whitest
 var colorBirth = "#dfd"; //
-var colorAlive = "#0c0"; // colorest
-var colorDying = "#4c4"; //
+var colorAlive = "#080"; // colorest
+var colorDying = "#5a5"; //
 /***/
 
 
