@@ -6,24 +6,26 @@
 
 
 
+
 /*** Adjustable Parameters ***/
-var matrixRows = 16;
-var matrixCols = 24;
+var matrixRows = 8;
+var matrixCols = 12;
 
-var colorDying = "#4444ff"; //lightblue
-var colorAlive = "#0000ff"; //blue
-var colorBirth = "#ddffdd"; //lightgreen
-var colorNothing = "#ffffff"; //white
-
+var colorNothing = "#fff"; // whitest
+var colorBirth = "#dfd"; //
+var colorAlive = "#0c0"; // colorest
+var colorDying = "#4c4"; //
 /***/
 
 
+
+/*** FIXED GLOBALS ***/
 var matrix = [];
 var cellPopulation = 0;
 
 
 
-
+/*** BEGIN MOUSE DOWN ***/
 var mouseIsDown = false;
 window.onload = function()
 {
@@ -32,29 +34,16 @@ window.onload = function()
 }
 function docOnMousedown() { mouseIsDown = true; }
 function docOnMouseup() { mouseIsDown = false; }
-
-
-
-
-
-
-
-
-
+/*** END MOUSE DOWN ***/
 
 
 
 /*** BEGIN TIMER ***/
-
-var generationDelay = 1000; //ms
-
-var gameGenerationTimer = window.setInterval(goNextGen,generationDelay);
-var timeOn = true;
-function turnTimeOn() { if ( !timeOn ) { gameGenerationTimer = window.setInterval(goNextGen,generationDelay); timeOn = true; } }
-function turnTimeOff() { clearInterval(gameGenerationTimer); timeOn = false; }
+var genTimer = null;
+function stopTime() { if ( genTimer ) { clearInterval( genTimer ); genTimer = 0; } }
+function startTime() { if ( !genTimer ) { genTimer = setInterval(function(){goNextGen()},1000); } }
 
 var generationCount = 0;
-
 /*** END TIMER ***/
 
 
@@ -64,6 +53,7 @@ var generationCount = 0;
 document.addEventListener('DOMContentLoaded', function() {
     drawMatrix();
     resetGame();
+    startTime();
 }, false);
 
 function drawMatrix() {
@@ -172,11 +162,11 @@ function getNumFriends(row, col) {
 
 
 function goNextGen() {
-    var tempMatrix = matrix;
+    var tempMatrix = $.extend( true, {}, matrix );
     for ( var row = 0; row < matrixRows; row++ ) {
         for ( var col = 0; col < matrixCols; col++ ) {
             var numFriends = getNumFriends(row, col);
-            // 1) Any live cell with fewer than two live neighbors dies, as if caused by under-population;
+            /*// 1) Any live cell with fewer than two live neighbors dies, as if caused by under-population;
             if ( matrix[row][col].exists && numFriends < 2 ) { tempMatrix[row][col].exists = 0; }
             // 2) Any live cell with two or three live neighbors lives on to the next generation;
             //if ( matrix[row][col] && 2 <= numFriends && numFriends <= 3 ) {};
@@ -184,8 +174,13 @@ function goNextGen() {
             if ( matrix[row][col].exists && 3 < numFriends ) { tempMatrix[row][col].exists = 0; }
             // 4) Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
             if ( !matrix[row][col].exists && numFriends == 3 ) { tempMatrix[row][col].exists = 1; }
+            */
+            if ( numFriends < 2 ) { tempMatrix[row][col].exists = 0; }
+            else if ( numFriends == 3 ) { tempMatrix[row][col].exists = 1; }
+            else if ( numFriends > 3 ) { tempMatrix[row][col].exists = 0; }
         }
     }
+
     matrix = tempMatrix;
     generationCount++;
 
