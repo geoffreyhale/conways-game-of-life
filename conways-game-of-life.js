@@ -6,6 +6,23 @@
 
 
 
+var mouseIsDown = false;
+window.onload = function()
+{
+    document.onmousedown = docOnMousedown;
+    document.onmouseup = docOnMouseup;
+}
+function docOnMousedown()
+{
+    mouseIsDown = true;
+}
+function docOnMouseup()
+{
+    mouseIsDown = false;
+}
+
+
+
 
 
 
@@ -39,17 +56,28 @@ function initMatrix() {
 
 function drawMatrix() {
     var toGrid = "";
-    toGrid += "<table class='conways-game-of-life'>";
+    toGrid += "<table>";
     for ( var row = 0; row < matrixRows; row++ ) {
         toGrid += "<tr>";
         for ( var col = 0; col < matrixCols; col++ ) {
-            toGrid += "<td id='cell-"+row+"-"+col+"' class='conways-game-of-life' onClick='toggleCell("+row+","+col+")'></td>";
+            toGrid += "<td id='cell-"+row+"-"+col+"' class='cellsClass'" +
+                //"  onmouseover='StartDragSelect(this);'" +
+                " onmouseover='toggleCell2(" + row + "," + col + ");'" +
+            " onClick='toggleCell("+row+","+col+")'" +
+                "></td>";
         }
         toGrid += "</tr>";
     }
     toGrid += "</table>";
     document.getElementById("gameGrid").innerHTML = toGrid;
 }
+
+function StartDragSelect(obj)
+{
+
+}
+
+
 
 function updateMatrix() {
     cellPopulation = 0;
@@ -126,6 +154,16 @@ function toggleCell( row, col ) {
     updateMatrix();
     updateInfoBoard();
 }
+
+function toggleCell2( row, col ) {
+    if ( mouseIsDown ) {
+        matrix[row][col] = !matrix[row][col];
+        updateMatrix();
+        updateInfoBoard();
+    }
+}
+
+
 
 
 
