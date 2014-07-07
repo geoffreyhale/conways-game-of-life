@@ -38,11 +38,15 @@ function docOnMouseup() { mouseIsDown = false; }
 
 
 
+
+
+
+
 /*** BEGIN TIMER ***/
 var genTimer = null;
 function stopTime() {
     if ( genTimer ) {
-        clearInterval( genTimer ); genTimer = 0;
+        clearInterval( genTimer ); genTimer = null;
         document.getElementById("stopTimerButton").disabled = true;
         document.getElementById("startTimerButton").disabled = false;
     }
@@ -54,7 +58,6 @@ function startTime() {
         document.getElementById("stopTimerButton").disabled = false;
     }
 }
-
 var generationCount = 0;
 /*** END TIMER ***/
 
@@ -65,7 +68,6 @@ var generationCount = 0;
 document.addEventListener('DOMContentLoaded', function() {
     drawMatrix();
     resetGame();
-    startTime();
 }, false);
 
 function drawMatrix() {
