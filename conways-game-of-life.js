@@ -41,32 +41,43 @@ function docOnMouseup() { mouseIsDown = false; }
 
 
 
-
+// TIMER
 var timer = {
 
    active: false,
-    ticks: 0,
+   ticks: 0,
+   speed: 1000,
 
    init: function() {
        if ( this.active ) {
            this.start();
-
        }
+       this.updateButtonDisabledState();
    },
 
    start: function() {
-        active = setInterval( function() { goNextGen() }, 1000 );
+        active = setInterval( function() { goNextGen() }, this.speed );
         document.getElementById("startTimerButton").disabled = true;
         document.getElementById("stopTimerButton").disabled = false;
-    },
+   },
 
-    stop: function() {
-        clearInterval( active ); active = null;
-        document.getElementById("stopTimerButton").disabled = true;
-        document.getElementById("startTimerButton").disabled = false;
-    }
+   stop: function() {
+        clearInterval( active ); active = false;
+       this.updateButtonDisabledState();
+   },
 
-}; // end timer
+   updateButtonDisabledState: function() {
+       document.getElementById("startTimerButton").disabled = this.active;
+       document.getElementById("stopTimerButton").disabled = !this.active;
+   },
+
+   setSpeed: function( newSpeed ) {
+       this.speed = newSpeed;
+       this.stop();
+       this.start();
+   }
+
+}; // END TIMER
 
 
 

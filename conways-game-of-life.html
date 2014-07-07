@@ -23,6 +23,8 @@
                         <button id="startTimerButton" onclick="timer.start()">START</button>
                         <button id="stopTimerButton" onclick="timer.stop()">STOP</button>
                         <!--<button onclick="goNextGen()">STEP</button>-->
+                        <input type="radio" name="timerSpeed" value="slow" onclick="timer.setSpeed(2000)">slow<br/>
+                        <input type="radio" name="timerSpeed" value="fast" onclick="timer.setSpeed(500)">fast
                     </fieldset>
                     <fieldset>
                         <button onclick="resetGame(0)">CLEAR</button>
