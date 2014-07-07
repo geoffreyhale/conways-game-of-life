@@ -40,8 +40,20 @@ function docOnMouseup() { mouseIsDown = false; }
 
 /*** BEGIN TIMER ***/
 var genTimer = null;
-function stopTime() { if ( genTimer ) { clearInterval( genTimer ); genTimer = 0; } }
-function startTime() { if ( !genTimer ) { genTimer = setInterval(function(){goNextGen()},1000); } }
+function stopTime() {
+    if ( genTimer ) {
+        clearInterval( genTimer ); genTimer = 0;
+        document.getElementById("stopTimerButton").disabled = true;
+        document.getElementById("startTimerButton").disabled = false;
+    }
+}
+function startTime() {
+    if ( !genTimer ) {
+        genTimer = setInterval( function() { goNextGen() }, 1000 );
+        document.getElementById("startTimerButton").disabled = true;
+        document.getElementById("stopTimerButton").disabled = false;
+    }
+}
 
 var generationCount = 0;
 /*** END TIMER ***/
@@ -63,8 +75,8 @@ function drawMatrix() {
         toGrid += "<tr>";
         for ( var col = 0; col < matrixCols; col++ ) {
             toGrid += "<td id='cell-"+row+"-"+col+"' class='cellsClass'" +
+                " onmousedown='toggleCell("+row+","+col+")'" +
                 " onmouseover='toggleCell2(" + row + "," + col + ");'" +
-                " onClick='toggleCell("+row+","+col+")'" +
                 "></td>";
         }
         toGrid += "</tr>";
@@ -217,14 +229,17 @@ function goNextGen() {
 
 /*** USER INPUT BEGIN ***/
 
+var toggleTo = true;
+
 function toggleCell( row, col ) {
     matrix[row][col].exists = !matrix[row][col].exists;
+    toggleTo = matrix[row][col].exists;
     updateGameDisplay();
 }
 
 function toggleCell2( row, col ) {
     if ( mouseIsDown ) {
-        matrix[row][col].exists = !matrix[row][col].exists;
+        matrix[row][col].exists = toggleTo;//!matrix[row][col].exists;
         updateGameDisplay();
     }
 }

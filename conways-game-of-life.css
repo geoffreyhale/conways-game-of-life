@@ -1,3 +1,17 @@
+button {
+    width: 110px;
+    font-size: 20px;
+    padding:10px;
+    background-color: #dcdcdc;
+    border: 1px solid #aaa;
+    -moz-box-shadow: inset 0 0 5px #fff;
+    -webkit-box-shadow: inset 0 0 5px #fff;
+    box-shadow: inner 1px 1px 5px #fff;
+}
+button:hover {
+    background-color: #aaaaaa;
+}
+
 #cgol_container {
     width: 860px;
     margin: 0 auto;
@@ -24,9 +38,6 @@
     width: 229px;
 }
 
-#infoBoard, #controlPanel {
-
-}
 #controlPanel {
     margin-top: 10px;
 }

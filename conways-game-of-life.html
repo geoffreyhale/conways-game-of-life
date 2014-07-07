@@ -18,17 +18,16 @@
             </div>
             <div id="cgol_game_col_right">
                 <div id="infoBoard" class="pretty">infoBoard will draw here</div>
-                <div id="controlPanel" class="pretty">
+                <div id="controlPanel">
+                    <fieldset>
+                        <button id="startTimerButton" onclick="startTime()" disabled>START</button>
+                        <button id="stopTimerButton" onclick="stopTime()">STOP</button>
+                        <!--<button onclick="goNextGen()">STEP</button>-->
+                    </fieldset>
                     <fieldset>
                         <button onclick="resetGame(0)">CLEAR</button>
                         <button onclick="resetGame()">RANDOM</button>
                         <button onclick="setGliderGame()">GLIDERS</button>
-                    </fieldset>
-
-                    <fieldset>
-                        <button onclick="stopTime()">STOP</button>
-                        <button onclick="goNextGen()">STEP</button>
-                        <button onclick="startTime()">START</button>
                     </fieldset>
                 </div>
             </div>
