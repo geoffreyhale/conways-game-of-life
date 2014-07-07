@@ -19,9 +19,9 @@
             <div id="cgol_game_col_right">
                 <div id="infoBoard" class="pretty">infoBoard will draw here</div>
                 <div id="controlPanel">
-                    <fieldset>
-                        <button id="startTimerButton" onclick="startTime()">START</button>
-                        <button id="stopTimerButton" onclick="stopTime()" disabled>STOP</button>
+                    <fieldset id="timerButtons">
+                        <button id="startTimerButton" onclick="timer.start()">START</button>
+                        <button id="stopTimerButton" onclick="timer.stop()">STOP</button>
                         <!--<button onclick="goNextGen()">STEP</button>-->
                     </fieldset>
                     <fieldset>

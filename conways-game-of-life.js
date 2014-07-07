@@ -42,32 +42,38 @@ function docOnMouseup() { mouseIsDown = false; }
 
 
 
-/*** BEGIN TIMER ***/
-var genTimer = null;
-function stopTime() {
-    if ( genTimer ) {
-        clearInterval( genTimer ); genTimer = null;
+var timer = {
+
+   active: false,
+    ticks: 0,
+
+   init: function() {
+       if ( this.active ) {
+           this.start();
+
+       }
+   },
+
+   start: function() {
+        active = setInterval( function() { goNextGen() }, 1000 );
+        document.getElementById("startTimerButton").disabled = true;
+        document.getElementById("stopTimerButton").disabled = false;
+    },
+
+    stop: function() {
+        clearInterval( active ); active = null;
         document.getElementById("stopTimerButton").disabled = true;
         document.getElementById("startTimerButton").disabled = false;
     }
-}
-function startTime() {
-    if ( !genTimer ) {
-        genTimer = setInterval( function() { goNextGen() }, 1000 );
-        document.getElementById("startTimerButton").disabled = true;
-        document.getElementById("stopTimerButton").disabled = false;
-    }
-}
-var generationCount = 0;
-/*** END TIMER ***/
 
-
+}; // end timer
 
 
 
 document.addEventListener('DOMContentLoaded', function() {
     drawMatrix();
     resetGame();
+    timer.init();
 }, false);
 
 function drawMatrix() {
@@ -90,7 +96,7 @@ function drawMatrix() {
 
 
 function resetGame(opts) {
-    generationCount = 0;
+    timer.ticks = 0;
     initMatrix();
     setGame(opts);
     updateGameDisplay();
@@ -116,7 +122,7 @@ function setGame(opts) {
     }
 }
 function setGliderGame() {
-    generationCount = 0;
+    timer.ticks = 0;
     setGame(0);
     matrix[matrixRows-4][1].exists = 1;
     matrix[matrixRows-4][2].exists = 1;
@@ -160,7 +166,7 @@ function updateGameDisplay() {
         }
     }
 
-    var boardInfo = "Generation: " + generationCount +
+    var boardInfo = "Generation: " + timer.ticks +
         "<br/>Population: " + cellPopulation;
     document.getElementById("infoBoard").innerHTML = boardInfo;
 }
@@ -216,7 +222,7 @@ function goNextGen() {
     }
 
     matrix = tempMatrix;
-    generationCount++;
+    timer.ticks++;
 
     updateGameDisplay();
 }
